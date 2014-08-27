@@ -192,27 +192,26 @@ GenerateHelperFunctionDeclarations(io::Printer* printer, bool is_submessage)
   vars["lcclassname"] = FullNameToLower(descriptor_->full_name());
   printer->Print(vars,
 		 "/* $classname$ methods */\n"
-		 "void   $lcclassname$__init\n"
-		 "                     ($classname$         *message);\n"
+		 "void $lcclassname$__init\n"
+		 "  ($classname$* message);\n"
 		);
   if (!is_submessage) {
     printer->Print(vars,
-		 "size_t $lcclassname$__get_packed_size\n"
-		 "                     (const $classname$   *message);\n"
-		 "size_t $lcclassname$__pack\n"
-		 "                     (const $classname$   *message,\n"
-		 "                      uint8_t             *out);\n"
-		 "size_t $lcclassname$__pack_to_buffer\n"
-		 "                     (const $classname$   *message,\n"
-		 "                      ProtobufCBuffer     *buffer);\n"
-		 "$classname$ *\n"
-		 "       $lcclassname$__unpack\n"
-		 "                     (ProtobufCAllocator  *allocator,\n"
-                 "                      size_t               len,\n"
-                 "                      const uint8_t       *data);\n"
-		 "void   $lcclassname$__free_unpacked\n"
-		 "                     ($classname$ *message,\n"
-		 "                      ProtobufCAllocator *allocator);\n"
+		 "size_t $lcclassname$__get_packed_size(\n"
+		 "  const $classname$ *message);\n"
+		 "size_t $lcclassname$__pack(\n"
+		 "  const $classname$ *message,\n"
+		 "  uint8_t* out);\n"
+		 "size_t $lcclassname$__pack_to_buffer(\n"
+		 "  const $classname$* message,\n"
+		 "  ProtobufCBuffer* buffer);\n"
+		 "$classname$ * $lcclassname$__unpack(\n"
+		 "    ProtobufCAllocator* allocator,\n"
+     "    size_t len,\n"
+     "    const uint8_t* data);\n"
+		 "void $lcclassname$__free_unpacked(\n"
+		 "  $classname$* message,\n"
+		 "  ProtobufCAllocator* allocator);\n"
 		);
   }
 }
@@ -238,9 +237,9 @@ void MessageGenerator::GenerateClosureTypedef(io::Printer* printer)
   std::map<string, string> vars;
   vars["name"] = FullNameToC(descriptor_->full_name());
   printer->Print(vars,
-                 "typedef void (*$name$_Closure)\n"
-		 "                 (const $name$ *message,\n"
-		 "                  void *closure_data);\n");
+    "typedef void (*$name$_Closure) (\n"
+		 "  const $name$* message,\n"
+		 "  void* closure_data);\n");
 }
 
 static int
@@ -265,51 +264,43 @@ GenerateHelperFunctionDefinitions(io::Printer* printer, bool is_submessage)
   vars["lcclassname"] = FullNameToLower(descriptor_->full_name());
   vars["ucclassname"] = FullNameToUpper(descriptor_->full_name());
   printer->Print(vars,
-		 "void   $lcclassname$__init\n"
-		 "                     ($classname$         *message)\n"
-		 "{\n"
-		 "  static $classname$ init_value = $ucclassname$__INIT;\n"
-		 "  *message = init_value;\n"
-		 "}\n");
+    "void $lcclassname$__init($classname$* message)\n"
+    "{\n"
+    "  static $classname$ init_value = $ucclassname$__INIT;\n"
+    "  *message = init_value;\n"
+    "}\n");
   if (!is_submessage) {
     printer->Print(vars,
-		 "size_t $lcclassname$__get_packed_size\n"
-		 "                     (const $classname$ *message)\n"
-		 "{\n"
-		 "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
-		 "  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));\n"
-		 "}\n"
-		 "size_t $lcclassname$__pack\n"
-		 "                     (const $classname$ *message,\n"
-		 "                      uint8_t       *out)\n"
-		 "{\n"
-		 "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
-		 "  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);\n"
-		 "}\n"
-		 "size_t $lcclassname$__pack_to_buffer\n"
-		 "                     (const $classname$ *message,\n"
-		 "                      ProtobufCBuffer *buffer)\n"
-		 "{\n"
-		 "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
-		 "  return protobuf_c_message_pack_to_buffer ((const ProtobufCMessage*)message, buffer);\n"
-		 "}\n"
-		 "$classname$ *\n"
-		 "       $lcclassname$__unpack\n"
-		 "                     (ProtobufCAllocator  *allocator,\n"
-		 "                      size_t               len,\n"
-                 "                      const uint8_t       *data)\n"
-		 "{\n"
-		 "  return ($classname$ *)\n"
-		 "     protobuf_c_message_unpack (&$lcclassname$__descriptor,\n"
-		 "                                allocator, len, data);\n"
-		 "}\n"
-		 "void   $lcclassname$__free_unpacked\n"
-		 "                     ($classname$ *message,\n"
-		 "                      ProtobufCAllocator *allocator)\n"
-		 "{\n"
-		 "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
-		 "  protobuf_c_message_free_unpacked ((ProtobufCMessage*)message, allocator);\n"
-		 "}\n"
+    "size_t $lcclassname$__get_packed_size(const $classname$ *message)\n"
+    "{\n"
+    "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
+    "  return protobuf_c_message_get_packed_size ((const ProtobufCMessage*)(message));\n"
+    "}\n"
+    "size_t $lcclassname$__pack(const $classname$ *message,\n"
+    "  uint8_t* out)\n"
+    "{\n"
+    "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
+    "  return protobuf_c_message_pack ((const ProtobufCMessage*)message, out);\n"
+    "}\n"
+    "size_t $lcclassname$__pack_to_buffer(const $classname$ *message,\n"
+    "  ProtobufCBuffer *buffer)\n"
+    "{\n"
+    "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
+    "  return protobuf_c_message_pack_to_buffer((const ProtobufCMessage*)message, buffer);\n"
+    "}\n"
+    "$classname$* $lcclassname$__unpack(ProtobufCAllocator *allocator,\n"
+    "  size_t len,\n"
+    "  const uint8_t *data)\n"
+    "{\n"
+    "  return ($classname$ *)protobuf_c_message_unpack(&$lcclassname$__descriptor,\n"
+    "    allocator, len, data);\n"
+    "}\n"
+    "void $lcclassname$__free_unpacked($classname$ *message,\n"
+    "  ProtobufCAllocator *allocator)\n"
+    "{\n"
+    "  assert(message->base.descriptor == &$lcclassname$__descriptor);\n"
+    "  protobuf_c_message_free_unpacked((ProtobufCMessage*)message, allocator);\n"
+    "}\n"
 		);
   }
 }
@@ -371,7 +362,7 @@ GenerateMessageDescriptor(io::Printer* printer) {
 	case FieldDescriptor::CPPTYPE_BOOL:
 	  vars["field_dv_ctype"] = "protobuf_c_boolean";
 	  break;
-	  
+
 	case FieldDescriptor::CPPTYPE_MESSAGE:
 	  // NOTE: not supported by protobuf
 	  vars["maybe_static"] = "";
@@ -416,7 +407,7 @@ GenerateMessageDescriptor(io::Printer* printer) {
     sorted_fields[i] = descriptor_->field(i);
   }
   qsort (sorted_fields, descriptor_->field_count(),
-       sizeof (const FieldDescriptor *), 
+       sizeof (const FieldDescriptor *),
        compare_pfields_by_number);
   for (int i = 0; i < descriptor_->field_count(); i++) {
     const FieldDescriptor *field = sorted_fields[i];
@@ -463,7 +454,7 @@ GenerateMessageDescriptor(io::Printer* printer) {
         "#define $lcclassname$__field_indices_by_name NULL\n"
         "#define $lcclassname$__number_ranges NULL\n");
     }
-  
+
   printer->Print(vars,
   "const ProtobufCMessageDescriptor $lcclassname$__descriptor =\n"
   "{\n"

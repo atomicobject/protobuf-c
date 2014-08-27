@@ -182,7 +182,7 @@ string FullNameToLower(const string &full_name) {
   string rv = "";
   for (unsigned i = 0; i < pieces.size(); i++) {
     if (pieces[i] == "") continue;
-    if (rv != "") rv += "__";
+    if (rv != "") rv += "_";
     rv += CamelToLower(pieces[i]);
   }
   return rv;
@@ -193,7 +193,7 @@ string FullNameToUpper(const string &full_name) {
   string rv = "";
   for (unsigned i = 0; i < pieces.size(); i++) {
     if (pieces[i] == "") continue;
-    if (rv != "") rv += "__";
+    if (rv != "") rv += "_";
     rv += CamelToUpper(pieces[i]);
   }
   return rv;
@@ -204,7 +204,7 @@ string FullNameToC(const string &full_name) {
   string rv = "";
   for (unsigned i = 0; i < pieces.size(); i++) {
     if (pieces[i] == "") continue;
-    if (rv != "") rv += "__";
+    if (rv != "") rv += "_";
     rv += ToCamel(pieces[i]);
   }
   return rv;
@@ -278,13 +278,7 @@ string ClassName(const EnumDescriptor* enum_descriptor, bool qualified) {
   }
 }
 
-string FieldName(const FieldDescriptor* field) {
-  string result = ToLower(field->name());
-  if (kKeywords.count(result) > 0) {
-    result.append("_");
-  }
-  return result;
-}
+string FieldName(const FieldDescriptor* field) {return field->name();}
 
 string FieldDeprecated(const FieldDescriptor* field) {
   if (field->options().deprecated()) {
@@ -376,7 +370,7 @@ WriteIntRanges(io::Printer* printer, int n_values, const int *values, const stri
     return 0;
   }
 }
-    
+
 
 
 // XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx

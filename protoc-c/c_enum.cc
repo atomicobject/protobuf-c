@@ -94,7 +94,7 @@ void EnumGenerator::GenerateDefinition(io::Printer* printer) {
 
 
   vars["opt_comma"] = ",";
-  vars["prefix"] = FullNameToUpper(descriptor_->full_name()) + "__";
+  vars["prefix"] = FullNameToUpper(descriptor_->full_name()) + "_";
   for (int i = 0; i < descriptor_->value_count(); i++) {
     vars["name"] = descriptor_->value(i)->name();
     vars["number"] = SimpleItoa(descriptor_->value(i)->number());
@@ -142,7 +142,7 @@ void EnumGenerator::GenerateValueInitializer(io::Printer *printer, int index)
   const EnumValueDescriptor *vd = descriptor_->value(index);
   map<string, string> vars;
   vars["enum_value_name"] = vd->name();
-  vars["c_enum_value_name"] = FullNameToUpper(descriptor_->full_name()) + "__" + vd->name();
+  vars["c_enum_value_name"] = FullNameToUpper(descriptor_->full_name()) + "_" + vd->name();
   vars["value"] = SimpleItoa(vd->number());
   printer->Print(vars,
    "  { \"$enum_value_name$\", \"$c_enum_value_name$\", $value$ },\n");

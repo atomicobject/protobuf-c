@@ -77,7 +77,7 @@ void SetStringVariables(const FieldDescriptor* descriptor,
                         map<string, string>* variables) {
   (*variables)["name"] = FieldName(descriptor);
   (*variables)["default"] = FullNameToLower(descriptor->full_name())
-	+ "__default_value";
+	+ "_default_value";
   (*variables)["deprecated"] = FieldDeprecated(descriptor);
 }
 
@@ -96,11 +96,11 @@ void StringFieldGenerator::GenerateStructMembers(io::Printer* printer) const
   switch (descriptor_->label()) {
     case FieldDescriptor::LABEL_REQUIRED:
     case FieldDescriptor::LABEL_OPTIONAL:
-      printer->Print(variables_, "char *$name$$deprecated$;\n");
+      printer->Print(variables_, "char* $name$$deprecated$;\n");
       break;
     case FieldDescriptor::LABEL_REPEATED:
       printer->Print(variables_, "size_t n_$name$$deprecated$;\n");
-      printer->Print(variables_, "char **$name$$deprecated$;\n");
+      printer->Print(variables_, "char** $name$$deprecated$;\n");
       break;
   }
 }

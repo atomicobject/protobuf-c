@@ -150,7 +150,7 @@ void ServiceGenerator::GenerateCallersDeclarations(io::Printer* printer)
     vars_["metpad"] = ConvertToSpaces(lcname);
     vars_["input_typename"] = FullNameToC(method->input_type()->full_name());
     vars_["output_typename"] = FullNameToC(method->output_type()->full_name());
-    vars_["padddddddddddddddddd"] = ConvertToSpaces(lcfullname + "__" + lcname);
+    vars_["padddddddddddddddddd"] = ConvertToSpaces(lcfullname + "_" + lcname);
     printer->Print(vars_,
                    "void $lcfullname$__$method$(ProtobufCService *service,\n"
                    "     $padddddddddddddddddd$ const $input_typename$ *input,\n"
@@ -197,7 +197,7 @@ void ServiceGenerator::GenerateServiceDescriptor(io::Printer* printer)
 {
   int n_methods = descriptor_->method_count();
   MethodIndexAndName *mi_array = new MethodIndexAndName[n_methods];
-  
+
   vars_["n_methods"] = SimpleItoa(n_methods);
   printer->Print(vars_, "static const ProtobufCMethodDescriptor $lcfullname$__method_descriptors[$n_methods$] =\n"
                        "{\n");
@@ -249,9 +249,9 @@ void ServiceGenerator::GenerateCallersImplementations(io::Printer* printer)
     vars_["metpad"] = ConvertToSpaces(lcname);
     vars_["input_typename"] = FullNameToC(method->input_type()->full_name());
     vars_["output_typename"] = FullNameToC(method->output_type()->full_name());
-    vars_["padddddddddddddddddd"] = ConvertToSpaces(lcfullname + "__" + lcname);
+    vars_["padddddddddddddddddd"] = ConvertToSpaces(lcfullname + "_" + lcname);
     vars_["index"] = SimpleItoa(i);
-     
+
     printer->Print(vars_,
                    "void $lcfullname$__$method$(ProtobufCService *service,\n"
                    "     $padddddddddddddddddd$ const $input_typename$ *input,\n"
