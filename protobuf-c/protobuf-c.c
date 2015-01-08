@@ -141,12 +141,14 @@ protobuf_c_version_number(void)
 static void *
 system_alloc(void *allocator_data, size_t size)
 {
+	(void)allocator_data;
 	return malloc(size);
 }
 
 static void
 system_free(void *allocator_data, void *data)
 {
+	(void)allocator_data;
 	free(data);
 }
 
